@@ -1,4 +1,4 @@
 public enum Function {
-    bye, list, mark, unmark, todo, deadline, event
+    bye, list, mark, unmark, delete, todo, deadline, event
 
 }

@@ -22,6 +22,9 @@ public class Chat {
                 } else if (job.getFunction() == Function.unmark) {
                     Integer index = convertToInt(job.getDescription());
                     markAsUndone(index, list);
+                } else if (job.getFunction() == Function.delete) {
+                    Integer index = convertToInt(job.getDescription());
+                    deleteTask(index, list);
                 } else if (job.getFunction() == Function.todo) {
                     Todo todo = new Todo(job.getDescription());
                     addTask(todo, list);
@@ -130,6 +133,21 @@ public class Chat {
         } catch (IndexOutOfBoundsException e) {
             throw new ChatEditException("ChatEditException: Out of bounds!");
         }
+    }
+
+    public static void deleteTask(Integer index, ArrayList<Task> list) throws ChatParseException {
+        try {
+            Task task = list.get(index - 1);
+            list.remove(task);
+            System.out.println("____________________________________________________________");
+            System.out.println("Noted. I've removed this task:");
+            System.out.println("  " + task);
+            System.out.println("Now you have " + list.size() + " tasks in the list.");
+            System.out.println("____________________________________________________________");
+        } catch (IndexOutOfBoundsException e) {
+            throw new ChatParseException("ChatEditException: Out of bounds!");
+        }
+
     }
 
     public static void addTask(Task task, ArrayList<Task> list) {
