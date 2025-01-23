@@ -21,11 +21,23 @@ public class Duke {
             } else if (text.startsWith("unmark")) {
                 Integer index = Integer.parseInt(text.substring(7));
                 markAsUndone(index, list);
+            } else if (text.startsWith("todo")) {
+                Todo todo = new Todo(text.substring(5));
+                addTask(todo, list);
+            } else if (text.startsWith("deadline") && (text.contains("/by"))) {
+                String[] toSplit = text.substring(9).split("/");
+                Deadline deadline = new Deadline(toSplit[0].trim(),
+                                                 toSplit[1].substring(3).trim());
+                addTask(deadline, list);
+            } else if (text.startsWith("event") && (text.contains("/from")) && (text.contains("/to"))) {
+                String[] toSplit = text.substring(6).split("/");
+                Event event = new Event(toSplit[0].trim(),
+                                        toSplit[1].substring(5).trim(),
+                                        toSplit[2].substring(3).trim());
+                addTask(event, list);
             } else {
-                Task task = new Task(text);
-                list.add(task);
                 System.out.println("____________________________________________________________");
-                System.out.println("added: " + text);
+                System.out.println("Error: Task type not defined.");
                 System.out.println("____________________________________________________________");
             }
         }
@@ -39,6 +51,7 @@ public class Duke {
         if (list.isEmpty()) {
             System.out.println("list is empty...");
         } else {
+            System.out.println("Here are the tasks in your list:");
             for (int i = 0; i < list.size(); i++) {
                 Task task = list.get(i);
                 System.out.println(i + 1 + "." + task);
@@ -70,6 +83,15 @@ public class Duke {
             System.out.println("OK, I've marked this task as not done yet:");
             System.out.println("  " + task);
         }
+        System.out.println("____________________________________________________________");
+    }
+
+    public static void addTask(Task task, ArrayList<Task> list) {
+        list.add(task);
+        System.out.println("____________________________________________________________");
+        System.out.println("Got it. I've added this task:");
+        System.out.println("  " + task);
+        System.out.println("Now you have " + list.size() + " tasks in the list.");
         System.out.println("____________________________________________________________");
     }
 }
