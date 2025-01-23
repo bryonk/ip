@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Duke {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<Task> list = new ArrayList<Task>();
         System.out.println("____________________________________________________________");
         System.out.println("Hello! I'm Chat");
         System.out.println("What can I do for you?");
@@ -14,9 +14,16 @@ public class Duke {
             if (text.equals("bye")) {
                 break;
             } else if (text.equals("list")) {
-                print_list(list);
+                printList(list);
+            } else if (text.startsWith("mark")) {
+                Integer index = Integer.parseInt(text.substring(5));
+                markAsDone(index, list);
+            } else if (text.startsWith("unmark")) {
+                Integer index = Integer.parseInt(text.substring(7));
+                markAsUndone(index, list);
             } else {
-                list.add(text);
+                Task task = new Task(text);
+                list.add(task);
                 System.out.println("____________________________________________________________");
                 System.out.println("added: " + text);
                 System.out.println("____________________________________________________________");
@@ -27,14 +34,41 @@ public class Duke {
         System.out.println("____________________________________________________________");
     }
 
-    public static void print_list(ArrayList<String> list) {
+    public static void printList(ArrayList<Task> list) {
         System.out.println("____________________________________________________________");
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             System.out.println("list is empty...");
         } else {
             for (int i = 0; i < list.size(); i++) {
-                System.out.println(i + 1 + ". " + list.get(i));
+                Task task = list.get(i);
+                System.out.println(i + 1 + "." + task);
             }
+        }
+        System.out.println("____________________________________________________________");
+    }
+
+    public static void markAsDone(Integer index, ArrayList<Task> list) {
+        System.out.println("____________________________________________________________");
+        if (index > list.size()) {
+            System.out.println("Error: Index provided larger than list");
+        } else {
+            Task task = list.get(index - 1);
+            task.markAsDone();
+            System.out.println("Nice! I've marked this task as done:");
+            System.out.println("  " + task);
+        }
+        System.out.println("____________________________________________________________");
+    }
+
+    public static void markAsUndone(Integer index, ArrayList<Task> list) {
+        System.out.println("____________________________________________________________");
+        if (index > list.size()) {
+            System.out.println("Error: Index provided larger than list");
+        } else {
+            Task task = list.get(index - 1);
+            task.markAsUndone();
+            System.out.println("OK, I've marked this task as not done yet:");
+            System.out.println("  " + task);
         }
         System.out.println("____________________________________________________________");
     }
