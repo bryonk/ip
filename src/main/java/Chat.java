@@ -27,10 +27,10 @@ public class Chat {
                     addTask(todo, tasks);
                 } else if (job.getFunction() == Function.deadline &&
                         job.getDescription().contains("/by")) {
-                    String[] toSplit = job.getDescription().split("/");
+                    String[] toSplit = job.getDescription().split("/by");
                     try {
                         String taskName = toSplit[0].trim();
-                        String deadlineBy = toSplit[1].substring(3).trim();
+                        String deadlineBy = toSplit[1].trim();
                         if (taskName.isEmpty() || deadlineBy.isEmpty()) {
                             throw new ChatAddException("ChatAddException: Function deadline is missing arguments!");
                         }
@@ -43,11 +43,12 @@ public class Chat {
                 } else if (job.getFunction() == Function.event &&
                         job.getDescription().contains("/from") &&
                         job.getDescription().contains("/to")) {
-                    String[] toSplit = job.getDescription().split("/");
+                    String[] toSplit = job.getDescription().split("/from");
                     try {
                         String taskName = toSplit[0].trim();
-                        String eventFrom = toSplit[1].substring(5).trim();
-                        String eventTo = toSplit[2].substring(3).trim();
+                        String[] nextSplit = toSplit[1].split("/to");
+                        String eventFrom = nextSplit[0].trim();
+                        String eventTo = nextSplit[1].trim();
                         if (taskName.isEmpty() || eventFrom.isEmpty() || eventTo.isEmpty()) {
                             throw new ChatAddException("ChatAddException: Function event is missing arguments!");
                         }
@@ -82,7 +83,6 @@ public class Chat {
 
     public static void printList(TaskList tasks) {
         System.out.println("____________________________________________________________");
-        System.out.println("Here are the tasks in your list:");
         System.out.println(tasks);
         System.out.println("____________________________________________________________");
     }

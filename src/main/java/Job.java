@@ -16,8 +16,8 @@ public class Job {
         if (!this.description.isEmpty()) {
             return this.description;
         } else {
-            throw new ChatParseException("ChatParseException: Function " +
-                    this.function.name() + " is missing arguments!");
+            throw new ChatParseException("ChatParseException: Function "
+                    + this.function.name() + " is missing arguments!");
         }
     }
 
