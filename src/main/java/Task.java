@@ -1,6 +1,6 @@
 public class Task {
-    protected String description;
-    protected boolean isDone;
+    private final String description;
+    private boolean isDone;
 
     public Task(String description) {
         this.description = description;
@@ -9,6 +9,14 @@ public class Task {
 
     public String toString() {
         return "[" + this.getStatusIcon() + "] " + this.description;
+    }
+
+    public String toDataString() {
+        if (isDone) {
+            return "/-/1/-/" + this.description;
+        } else {
+            return "/-/0/-/" + this.description;
+        }
     }
 
     public String getStatusIcon() {

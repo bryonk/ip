@@ -12,4 +12,9 @@ public class Event extends Task {
     public String toString() {
         return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
     }
+
+    @Override
+    public String toDataString() {
+        return "D" + super.toDataString() + "/-/" + from + "/-/" + to;
+    }
 }
