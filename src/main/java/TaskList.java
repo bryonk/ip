@@ -36,6 +36,7 @@ public class TaskList {
             return "There are no Tasks.";
         } else {
             StringBuilder output = new StringBuilder();
+            output.append("Here are the tasks in your list:\n");
             for (int i = 0; i < this.getSize(); i++) {
                 output.append(i + 1).append(".").append(this.findTask(i));
                 if (i != this.getSize() - 1) {
