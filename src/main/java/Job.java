@@ -1,6 +1,6 @@
 public class Job {
-    protected Function function;
-    protected String description;
+    private final Function function;
+    private final String description;
 
     public Job(Function function) {
         this.function = function;

@@ -1,33 +1,30 @@
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class Chat {
     public static void main(String[] args) throws ChatException {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> list = new ArrayList<Task>();
-        System.out.println("____________________________________________________________");
-        System.out.println("Hello! I'm Chat");
-        System.out.println("What can I do for you?");
-        System.out.println("____________________________________________________________");
+        printWelcome();
+        Storage storage = new Storage("data/chat.txt");
+        TaskList tasks = storage.loadData();
         while (true) {
             try {
                 Job job = parseInput(scanner.nextLine());
                 if (job.getFunction() == Function.bye) {
                     break;
                 } else if (job.getFunction() == Function.list) {
-                    printList(list);
+                    printList(tasks);
                 } else if (job.getFunction() == Function.mark) {
                     Integer index = convertToInt(job.getDescription());
-                    markAsDone(index, list);
+                    markAsDone(index, tasks);
                 } else if (job.getFunction() == Function.unmark) {
                     Integer index = convertToInt(job.getDescription());
-                    markAsUndone(index, list);
+                    markAsUndone(index, tasks);
                 } else if (job.getFunction() == Function.delete) {
                     Integer index = convertToInt(job.getDescription());
-                    deleteTask(index, list);
+                    deleteTask(index, tasks);
                 } else if (job.getFunction() == Function.todo) {
                     Todo todo = new Todo(job.getDescription());
-                    addTask(todo, list);
+                    addTask(todo, tasks);
                 } else if (job.getFunction() == Function.deadline &&
                         job.getDescription().contains("/by")) {
                     String[] toSplit = job.getDescription().split("/");
@@ -38,7 +35,7 @@ public class Chat {
                             throw new ChatAddException("ChatAddException: Function deadline is missing arguments!");
                         }
                         Deadline deadline = new Deadline(taskName, deadlineBy);
-                        addTask(deadline, list);
+                        addTask(deadline, tasks);
                     } catch (IndexOutOfBoundsException e) {
                         throw new ChatAddException("ChatAddException: Function deadline has bad arguments!");
                     }
@@ -55,13 +52,14 @@ public class Chat {
                             throw new ChatAddException("ChatAddException: Function event is missing arguments!");
                         }
                         Event event = new Event(taskName, eventFrom, eventTo);
-                        addTask(event, list);
+                        addTask(event, tasks);
                     } catch (IndexOutOfBoundsException e) {
                         throw new ChatAddException("ChatAddException: Function event has bad arguments!");
                     }
                 } else {
                     throw new ChatInvalidException("ChatInvalidException: Invalid Function!");
                 }
+                storage.saveData(tasks);
             } catch (ChatException e) {
                 System.out.println("____________________________________________________________");
                 System.out.println(e.getMessage());
@@ -69,22 +67,23 @@ public class Chat {
             }
 
         }
+        scanner.close();
         System.out.println("____________________________________________________________");
         System.out.println("Bye. Hope to see you again soon!");
         System.out.println("____________________________________________________________");
     }
 
-    public static void printList(ArrayList<Task> list) {
+    public static void printWelcome() {
         System.out.println("____________________________________________________________");
-        if (list.isEmpty()) {
-            System.out.println("The list is empty.");
-        } else {
-            System.out.println("Here are the tasks in your list:");
-            for (int i = 0; i < list.size(); i++) {
-                Task task = list.get(i);
-                System.out.println(i + 1 + "." + task);
-            }
-        }
+        System.out.println("Hello! I'm Chat");
+        System.out.println("What can I do for you?");
+        System.out.println("____________________________________________________________");
+    }
+
+    public static void printList(TaskList tasks) {
+        System.out.println("____________________________________________________________");
+        System.out.println("Here are the tasks in your list:");
+        System.out.println(tasks);
         System.out.println("____________________________________________________________");
     }
 
@@ -109,40 +108,38 @@ public class Chat {
         }
     }
 
-    public static void markAsDone(Integer index, ArrayList<Task> list) throws ChatEditException {
+    public static void markAsDone(Integer index, TaskList tasks) throws ChatEditException {
         try {
-            Task task = list.get(index - 1);
-            task.markAsDone();
+            tasks.markTask(index - 1);
             System.out.println("____________________________________________________________");
             System.out.println("Nice! I've marked this task as done:");
-            System.out.println("  " + task);
+            System.out.println("  " + tasks.findTask(index - 1));
             System.out.println("____________________________________________________________");
         } catch (IndexOutOfBoundsException e) {
             throw new ChatEditException("ChatEditException: Out of bounds!");
         }
     }
 
-    public static void markAsUndone(Integer index, ArrayList<Task> list) throws ChatEditException {
+    public static void markAsUndone(Integer index, TaskList tasks) throws ChatEditException {
         try {
-            Task task = list.get(index - 1);
-            task.markAsUndone();
+            tasks.unmarkTask(index - 1);
             System.out.println("____________________________________________________________");
             System.out.println("OK, I've marked this task as not done yet:");
-            System.out.println("  " + task);
+            System.out.println("  " + tasks.findTask(index - 1));
             System.out.println("____________________________________________________________");
         } catch (IndexOutOfBoundsException e) {
             throw new ChatEditException("ChatEditException: Out of bounds!");
         }
     }
 
-    public static void deleteTask(Integer index, ArrayList<Task> list) throws ChatParseException {
+    public static void deleteTask(Integer index, TaskList tasks) throws ChatParseException {
         try {
-            Task task = list.get(index - 1);
-            list.remove(task);
+            Task task = tasks.findTask(index - 1);
+            tasks.deleteTask(index - 1);
             System.out.println("____________________________________________________________");
             System.out.println("Noted. I've removed this task:");
             System.out.println("  " + task);
-            System.out.println("Now you have " + list.size() + " tasks in the list.");
+            System.out.println("Now you have " + tasks.getSize() + " tasks in the list.");
             System.out.println("____________________________________________________________");
         } catch (IndexOutOfBoundsException e) {
             throw new ChatParseException("ChatEditException: Out of bounds!");
@@ -150,12 +147,12 @@ public class Chat {
 
     }
 
-    public static void addTask(Task task, ArrayList<Task> list) {
-        list.add(task);
+    public static void addTask(Task task, TaskList tasks) {
+        tasks.addTask(task);
         System.out.println("____________________________________________________________");
         System.out.println("Got it. I've added this task:");
         System.out.println("  " + task);
-        System.out.println("Now you have " + list.size() + " tasks in the list.");
+        System.out.println("Now you have " + tasks.getSize() + " tasks in the list.");
         System.out.println("____________________________________________________________");
     }
 }
