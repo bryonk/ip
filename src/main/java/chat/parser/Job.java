@@ -1,3 +1,7 @@
+package chat.parser;
+
+import chat.exceptions.ChatParseException;
+
 public class Job {
     private final Function function;
     private final String description;

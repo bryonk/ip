@@ -1,3 +1,7 @@
+package chat.tasks;
+
+import chat.exceptions.ChatAddException;
+
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

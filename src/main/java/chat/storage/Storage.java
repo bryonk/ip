@@ -1,7 +1,15 @@
+package chat.storage;
+
+import chat.exceptions.ChatFileException;
+import chat.tasklist.TaskList;
+import chat.tasks.Task;
+import chat.parser.Parser;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,27 +32,20 @@ public class Storage {
 
     }
 
-    public TaskList loadData() throws ChatException {
+    public TaskList loadTasks() throws ChatFileException {
         TaskList tasks = new TaskList();
         try {
             this.checkFile();
             Scanner scanner = new Scanner(this.file);
             while (scanner.hasNext()) {
                 String[] strings = scanner.nextLine().split("/-/");
-                Task task = switch (strings[0].trim()) {
-                    case "T" -> new Todo(strings[2].trim());
-                    case "D" -> new Deadline(strings[2].trim(), strings[3].trim());
-                    case "E" -> new Event(strings[2].trim(), strings[3].trim(), strings[4].trim());
-                    default -> new Task("");
-                };
+                Task task = Parser.parseFileInput(strings);
                 if (strings[1].trim().equals("1")) {
                     task.markAsDone();
                 }
-                tasks.addTask(task);
+                tasks.addTask(task, false);
             }
             return tasks;
-        } catch (ChatException e) {
-            return new TaskList();
         } catch (FileNotFoundException | IndexOutOfBoundsException e ) {
             throw new ChatFileException("ChatFileException: File format error!");
         }
