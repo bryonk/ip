@@ -5,6 +5,9 @@ import chat.tasks.Task;
 
 import java.util.ArrayList;
 
+/**
+ * Stores a list of Task objects and operates on it.
+ */
 public class TaskList {
     private final ArrayList<Task> tasks;
 
@@ -12,6 +15,12 @@ public class TaskList {
         this.tasks = new ArrayList<Task>();
     }
 
+    /**
+     * Adds a Task into the TaskList.
+     *
+     * @param task Task to be added.
+     * @param isVerbose If printing is required.
+     */
     public void addTask(Task task, boolean isVerbose) {
         this.tasks.add(task);
         if (isVerbose) {
@@ -21,6 +30,12 @@ public class TaskList {
         }
     }
 
+    /**
+     * Marks a Task in the TaskList.
+     *
+     * @param index Index of the Task.
+     * @throws ChatEditException If the index is out of bounds.
+     */
     public void markTask(int index) throws ChatEditException {
         try {
             this.tasks.get(index - 1).markAsDone();
@@ -31,6 +46,12 @@ public class TaskList {
         }
     }
 
+    /**
+     * Unmarks a Task in the TaskList.
+     *
+     * @param index Index of the Task.
+     * @throws ChatEditException If the index is out of bounds.
+     */
     public void unmarkTask(int index) throws ChatEditException {
         try {
             this.tasks.get(index - 1).markAsUndone();
@@ -41,6 +62,13 @@ public class TaskList {
         }
     }
 
+    /**
+     * Deletes a Task from the TaskList.
+     *
+     * @param index Index of the Task.
+     * @param isVerbose If printing is required.
+     * @throws ChatEditException If the index is out of bounds.
+     */
     public void deleteTask(int index, boolean isVerbose) throws ChatEditException {
         try {
             Task task = this.tasks.get(index - 1);
@@ -79,6 +107,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Converts the Tasks in TaskList into the file format for storage.
+     *
+     * @return ArrayList of Strings containing each Task in file storage format.
+     */
     public ArrayList<String> convertToDataFormat() {
         ArrayList<String> strings = new ArrayList<String>();
         for (Task task : tasks) {

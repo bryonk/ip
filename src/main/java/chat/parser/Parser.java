@@ -6,7 +6,18 @@ import chat.tasks.Todo;
 import chat.tasks.Deadline;
 import chat.tasks.Event;
 
+/**
+ * Parses input from users/files to the required format.
+ */
 public class Parser {
+
+    /**
+     * Parses input from the user into a Job object.
+     *
+     * @param input User input.
+     * @return Job object containing the function and description if present.
+     * @throws ChatParseException If the function is not recognised.
+     */
     public static Job parseInput(String input) throws ChatParseException {
         try {
             String[] inputArr = input.split(" ", 2);
@@ -20,6 +31,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses the input from the file into a Task object
+     *
+     * @param input String array containing the input type, description and date time if needed.
+     * @return Task object
+     */
     public static Task parseFileInput(String[] input) {
         Task task = switch (input[0].trim()) {
             case "T" -> new Todo(input[2].trim());

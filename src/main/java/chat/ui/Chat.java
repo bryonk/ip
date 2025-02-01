@@ -12,11 +12,19 @@ import chat.tasks.Event;
 import chat.tasks.Todo;
 import chat.tasks.Deadline;
 
+/**
+ * Base object containing the main function.
+ */
 public class Chat {
     private final Storage storage;
     private TaskList tasks;
     private final Ui ui;
 
+    /**
+     * Constructs a Chat object containing Ui, Storage and TaskList.
+     *
+     * @param filePath File path containing storage data.
+     */
     public Chat(String filePath) {
         this.ui = new Ui();
         this.storage = new Storage(filePath);
@@ -49,6 +57,12 @@ public class Chat {
         new Chat("data/chat.txt").run();
     }
 
+    /**
+     * Determine and execute command to run.
+     *
+     * @param job Job object containing Function and description.
+     * @return Boolean isExit to exit program.
+     */
     public boolean runCommand(Job job) {
         boolean isExit = false;
         if (job.getFunction() == Function.bye) {
