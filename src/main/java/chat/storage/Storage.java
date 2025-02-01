@@ -40,9 +40,6 @@ public class Storage {
             while (scanner.hasNext()) {
                 String[] strings = scanner.nextLine().split("/-/");
                 Task task = Parser.parseFileInput(strings);
-                if (strings[1].trim().equals("1")) {
-                    task.markAsDone();
-                }
                 tasks.addTask(task, false);
             }
             return tasks;

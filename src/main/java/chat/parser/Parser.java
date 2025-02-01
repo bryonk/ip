@@ -27,6 +27,9 @@ public class Parser {
             case "E" -> new Event(input[2].trim(), input[3].trim(), input[4].trim());
             default -> new Task("");
         };
+        if (input[1].trim().equals("1")) {
+            task.markAsDone();
+        }
         return task;
     }
 

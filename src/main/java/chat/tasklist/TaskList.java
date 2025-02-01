@@ -41,13 +41,15 @@ public class TaskList {
         }
     }
 
-    public void deleteTask(int index) throws ChatEditException {
+    public void deleteTask(int index, boolean isVerbose) throws ChatEditException {
         try {
             Task task = this.tasks.get(index - 1);
             this.tasks.remove(index - 1);
-            System.out.println("Noted. I've removed this task:");
-            System.out.println("  " + task);
-            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            if (isVerbose) {
+                System.out.println("Noted. I've removed this task:");
+                System.out.println("  " + task);
+                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            }
         } catch (IndexOutOfBoundsException e) {
             throw new ChatEditException("ChatEditException: Delete function out of bounds!");
         }
@@ -58,7 +60,7 @@ public class TaskList {
     }
 
     public Task findTask(int index) {
-        return this.tasks.get(index);
+        return this.tasks.get(index - 1);
     }
 
     public String toString() {

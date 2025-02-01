@@ -64,7 +64,7 @@ public class Chat {
             tasks.unmarkTask(index);
         } else if (job.getFunction() == Function.delete) {
             Integer index = Parser.convertToInt(job.getDescription());
-            tasks.deleteTask(index);
+            tasks.deleteTask(index, true);
         } else if (job.getFunction() == Function.todo) {
             Task task = new Todo(job.getDescription());
             tasks.addTask(task, true);
