@@ -35,6 +35,6 @@ public class TaskListTest {
     @Test
     public void findTaskTest() {
         tasks.addTask(new Todo("test"), false);
-        assertEquals("[T][ ] test", tasks.findTask(1).toString());
+        assertEquals("[T][ ] test", tasks.getTask(1).toString());
     }
 }

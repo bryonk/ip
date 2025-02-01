@@ -23,9 +23,9 @@ public class Event extends Task {
     public Event(String description, String from, String to) {
         super(description);
         try {
-            DateTimeFormatter d = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
-            this.from = LocalDateTime.from(d.parse(from.trim()));
-            this.to = LocalDateTime.from(d.parse(to.trim()));
+            DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
+            this.from = LocalDateTime.from(dateTime.parse(from.trim()));
+            this.to = LocalDateTime.from(dateTime.parse(to.trim()));
         } catch (DateTimeException e) {
             throw new ChatAddException("ChatAddException: Date time in wrong format (dd/MM/yyyy HHmm)");
         }
