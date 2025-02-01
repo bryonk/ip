@@ -59,8 +59,18 @@ public class TaskList {
         return this.tasks.size();
     }
 
-    public Task findTask(int index) {
+    public Task getTask(int index) {
         return this.tasks.get(index - 1);
+    }
+
+    public void findTask(String input) {
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            if (task.contains(input)) {
+                System.out.println((i + 1) + "." + task);
+            }
+        }
     }
 
     public String toString() {
@@ -69,9 +79,9 @@ public class TaskList {
         } else {
             StringBuilder output = new StringBuilder();
             output.append("Here are the tasks in your list:\n");
-            for (int i = 0; i < this.getSize(); i++) {
-                output.append(i + 1).append(".").append(this.findTask(i));
-                if (i != this.getSize() - 1) {
+            for (int i = 1; i < this.getSize() + 1; i++) {
+                output.append(i).append(".").append(this.getTask(i));
+                if (i != this.getSize()) {
                     output.append("\n");
                 }
             }

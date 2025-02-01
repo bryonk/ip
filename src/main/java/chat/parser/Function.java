@@ -1,6 +1,5 @@
 package chat.parser;
 
 public enum Function {
-    bye, list, mark, unmark, delete, todo, deadline, event
-
+    bye, list, mark, unmark, delete, todo, deadline, event, find
 }

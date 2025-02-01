@@ -32,4 +32,8 @@ public class Task {
     public void markAsUndone() {
         this.isDone = false;
     }
+
+    public boolean contains(String input) {
+        return this.description.toLowerCase().contains(input.toLowerCase());
+    }
 }

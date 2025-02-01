@@ -100,6 +100,8 @@ public class Chat {
             } catch (IndexOutOfBoundsException e) {
                 throw new ChatInvalidException("ChatInvalidException: Function event has bad arguments!");
             }
+        } else if (job.getFunction() == Function.find) {
+            tasks.findTask(job.getDescription());
         } else {
             throw new ChatInvalidException("ChatInvalidException: Invalid Function!");
         }
