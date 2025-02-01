@@ -12,8 +12,8 @@ public class Deadline extends Task {
     public Deadline(String description, String by) {
         super(description);
         try {
-            DateTimeFormatter d = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
-            this.by = LocalDateTime.from(d.parse(by.trim()));
+            DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
+            this.by = LocalDateTime.from(dateTime.parse(by.trim()));
         } catch (DateTimeException e) {
             throw new ChatAddException("ChatAddException: Date time in wrong format (dd/MM/yyyy HHmm)");
         }
@@ -27,6 +27,7 @@ public class Deadline extends Task {
 
     @Override
     public String toDataString() {
-        return "D" + super.toDataString() + "/-/" + this.by.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm"));
+        return "D" + super.toDataString() + "/-/"
+                + this.by.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm"));
     }
 }

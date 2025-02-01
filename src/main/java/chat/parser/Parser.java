@@ -1,10 +1,11 @@
 package chat.parser;
 
 import chat.exceptions.ChatParseException;
-import chat.tasks.Task;
-import chat.tasks.Todo;
 import chat.tasks.Deadline;
 import chat.tasks.Event;
+import chat.tasks.Task;
+import chat.tasks.Todo;
+
 
 public class Parser {
     public static Job parseInput(String input) throws ChatParseException {
