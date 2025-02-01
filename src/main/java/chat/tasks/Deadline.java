@@ -6,9 +6,18 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Deadline task that stores description and date to be done by.
+ */
 public class Deadline extends Task {
     private final LocalDateTime by;
 
+    /**
+     * Constructs a Deadline object.
+     *
+     * @param description Description of the Task.
+     * @param by Date to complete the Task by.
+     */
     public Deadline(String description, String by) {
         super(description);
         try {

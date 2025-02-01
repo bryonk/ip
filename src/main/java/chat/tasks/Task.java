@@ -1,9 +1,17 @@
 package chat.tasks;
 
+/**
+ * Task to be completed
+ */
 public class Task {
     private final String description;
     private boolean isDone;
 
+    /**
+     * Constructs a Task object.
+     *
+     * @param description Description of the Task.
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
@@ -13,6 +21,11 @@ public class Task {
         return "[" + this.getStatusIcon() + "] " + this.description;
     }
 
+    /**
+     * Converts Task description and completion into file storage format.
+     *
+     * @return String containing the completion boolean and description.
+     */
     public String toDataString() {
         if (isDone) {
             return "/-/1/-/" + this.description;
@@ -21,7 +34,7 @@ public class Task {
         }
     }
 
-    public String getStatusIcon() {
+    private String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }
 

@@ -6,10 +6,20 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Event task that stores description and dates from and to the event occurs.
+ */
 public class Event extends Task {
     protected LocalDateTime from;
     protected LocalDateTime to;
 
+    /**
+     * Constructs an Event object.
+     *
+     * @param description Description of the Task.
+     * @param from Date the Event starts from.
+     * @param to Date the Event ends.
+     */
     public Event(String description, String from, String to) {
         super(description);
         try {
