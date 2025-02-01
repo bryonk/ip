@@ -93,6 +93,16 @@ public class TaskList {
         return this.tasks.get(index - 1);
     }
 
+    public void findTask(String input) {
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            if (task.contains(input)) {
+                System.out.println((i + 1) + "." + task);
+            }
+        }
+    }
+
     public String toString() {
         if (tasks.isEmpty()) {
             return "There are no Tasks.";
