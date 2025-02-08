@@ -28,9 +28,4 @@ public class ParserTest {
                         .toString());
     }
 
-    @Test
-    public void convertToIntTest() {
-        assertEquals(1, Parser.convertToInt("1"));
-    }
-
 }

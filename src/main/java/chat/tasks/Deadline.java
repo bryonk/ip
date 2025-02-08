@@ -1,10 +1,7 @@
 package chat.tasks;
 
-import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import chat.exceptions.ChatAddException;
 
 /**
  * Deadline task that stores description and date to be done by.
@@ -18,14 +15,9 @@ public class Deadline extends Task {
      * @param description Description of the Task.
      * @param by Date to complete the Task by.
      */
-    public Deadline(String description, String by) {
+    public Deadline(String description, LocalDateTime by) {
         super(description);
-        try {
-            DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
-            this.by = LocalDateTime.from(dateTime.parse(by.trim()));
-        } catch (DateTimeException e) {
-            throw new ChatAddException("ChatAddException: Date time in wrong format (dd/MM/yyyy HHmm)");
-        }
+        this.by = by;
     }
 
     @Override

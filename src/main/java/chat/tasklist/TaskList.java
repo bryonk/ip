@@ -2,7 +2,6 @@ package chat.tasklist;
 
 import java.util.ArrayList;
 
-import chat.exceptions.ChatEditException;
 import chat.tasks.Task;
 
 /**
@@ -19,31 +18,31 @@ public class TaskList {
      * Adds a Task into the TaskList.
      *
      * @param task Task to be added.
-     * @param isVerbose If printing is required.
+     * @param isVerbose If response is required.
+     * @return Response of the add function
      */
-    public void addTask(Task task, boolean isVerbose) {
+    public String addTask(Task task, boolean isVerbose) {
         this.tasks.add(task);
         if (isVerbose) {
-            System.out.println("Got it. I've added this task:");
-            System.out.println("  " + task);
-            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            return "Got it. I've added this task:\n  " + task
+                    + "\nNow you have " + tasks.size() + " tasks in the list.";
         }
+        return "";
     }
 
     /**
      * Marks a Task in the TaskList.
      *
      * @param index Index of the Task.
-     * @throws ChatEditException If the index is out of bounds.
+     * @return Response of the mark function
      */
-    public void markTask(int index) throws ChatEditException {
+    public String markTask(int index) {
         try {
             Task task = this.getTask(index);
             task.markAsDone();
-            System.out.println("Nice! I've marked this task as done:");
-            System.out.println("  " + task);
+            return "Nice! I've marked this task as done:\n  " + task;
         } catch (IndexOutOfBoundsException e) {
-            throw new ChatEditException("ChatEditException: Mark function out of bounds!");
+            return "Error: mark function out of bounds!";
         }
     }
 
@@ -51,16 +50,15 @@ public class TaskList {
      * Unmarks a Task in the TaskList.
      *
      * @param index Index of the Task.
-     * @throws ChatEditException If the index is out of bounds.
+     * @return Response of the unmark function
      */
-    public void unmarkTask(int index) throws ChatEditException {
+    public String unmarkTask(int index) {
         try {
             Task task = this.getTask(index);
             task.markAsUndone();
-            System.out.println("OK, I've marked this task as not done yet:");
-            System.out.println("  " + task);
+            return "OK, I've marked this task as not done yet:\n  " + task;
         } catch (IndexOutOfBoundsException e) {
-            throw new ChatEditException("ChatEditException: Unmark function out of bounds!");
+            return "Error: unmark function out of bounds!";
         }
     }
 
@@ -69,19 +67,19 @@ public class TaskList {
      *
      * @param index Index of the Task.
      * @param isVerbose If printing is required.
-     * @throws ChatEditException If the index is out of bounds.
+     * @return Response of the delete function
      */
-    public void deleteTask(int index, boolean isVerbose) throws ChatEditException {
+    public String deleteTask(int index, boolean isVerbose) {
         try {
             Task task = this.getTask(index);
             this.tasks.remove(index - 1);
             if (isVerbose) {
-                System.out.println("Noted. I've removed this task:");
-                System.out.println("  " + task);
-                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                return "Noted. I've removed this task:\n  "
+                        + task + "\nNow you have " + tasks.size() + " tasks in the list.";
             }
+            return "";
         } catch (IndexOutOfBoundsException e) {
-            throw new ChatEditException("ChatEditException: Delete function out of bounds!");
+            return "Error: delete function out of bounds!";
         }
     }
 
@@ -97,21 +95,23 @@ public class TaskList {
      * Finds Tasks that contain the input string.
      *
      * @param input String to match with each Task.
+     * @return Response of the find function
      */
-    public void findTask(String input) {
-        System.out.println("Here are the matching tasks in your list:");
+    public String findTask(String input) {
+        StringBuilder response = new StringBuilder("Here are the matching tasks in your list:\n");
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);
             if (task.contains(input)) {
-                System.out.println((i + 1) + "." + task);
+                response.append((i + 1)).append(".").append(task);
             }
         }
+        return response.toString();
     }
 
     /**
-     * Converts the TaskList into a printable format.
+     * Returns the TaskList in a printable format.
      *
-     * @return Printable format of the TaskList.
+     * @return String of TaskList in printable format.
      */
     public String toString() {
         if (tasks.isEmpty()) {

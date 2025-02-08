@@ -1,6 +1,6 @@
 package chat.parser;
 
-import chat.exceptions.ChatParseException;
+import java.util.regex.Pattern;
 
 /**
  * Contains the Function type and String description for identifying and parsing function.
@@ -34,14 +34,12 @@ public class Job {
      * Checks and returns the description if parsed correctly.
      *
      * @return The description that follows the command.
-     * @throws ChatParseException If the Job object is missing expected description.
      */
-    public String getDescription() throws ChatParseException {
+    public String getDescription() {
         if (!this.description.isEmpty()) {
             return this.description;
         } else {
-            throw new ChatParseException("ChatParseException: Function "
-                    + this.function.name() + " is missing arguments!");
+            return "Error: " + this.function.name() + " function is missing arguments!";
         }
     }
 
@@ -52,5 +50,19 @@ public class Job {
      */
     public Function getFunction() {
         return this.function;
+    }
+
+    /**
+     * Check if the description contains an integer.
+     *
+     * @return If the Job contains an index in the description.
+     */
+    public boolean hasIndex() {
+        Pattern pattern = Pattern.compile("\\d+");
+        return pattern.matcher(description).matches();
+    }
+
+    public int getIndex() {
+        return Integer.parseInt(description);
     }
 }

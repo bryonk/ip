@@ -1,10 +1,7 @@
 package chat.tasks;
 
-import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import chat.exceptions.ChatAddException;
 
 /**
  * Event task that stores description and dates from and to the event occurs.
@@ -20,15 +17,10 @@ public class Event extends Task {
      * @param from Date the Event starts from.
      * @param to Date the Event ends.
      */
-    public Event(String description, String from, String to) {
+    public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
-        try {
-            DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
-            this.from = LocalDateTime.from(dateTime.parse(from.trim()));
-            this.to = LocalDateTime.from(dateTime.parse(to.trim()));
-        } catch (DateTimeException e) {
-            throw new ChatAddException("ChatAddException: Date time in wrong format (dd/MM/yyyy HHmm)");
-        }
+        this.from = from;
+        this.to = to;
     }
 
     @Override
