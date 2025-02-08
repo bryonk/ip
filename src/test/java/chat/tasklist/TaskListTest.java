@@ -1,10 +1,11 @@
 package chat.tasklist;
 
-import chat.tasks.Todo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import chat.tasks.Todo;
 
 public class TaskListTest {
     private TaskList tasks;
@@ -20,7 +21,7 @@ public class TaskListTest {
     }
 
     @Test
-    public void addTask_OneTaskListTest() {
+    public void addTask_oneTaskListTest() {
         tasks.addTask(new Todo("test"), false);
         assertEquals(1, tasks.getSize());
     }

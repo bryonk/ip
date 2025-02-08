@@ -1,10 +1,10 @@
 package chat.tasks;
 
-import chat.exceptions.ChatAddException;
-
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import chat.exceptions.ChatAddException;
 
 /**
  * Deadline task that stores description and date to be done by.

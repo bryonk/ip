@@ -1,17 +1,16 @@
 package chat.storage;
 
-import chat.exceptions.ChatFileException;
-import chat.tasklist.TaskList;
-import chat.tasks.Task;
-import chat.parser.Parser;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import chat.exceptions.ChatFileException;
+import chat.parser.Parser;
+import chat.tasklist.TaskList;
+import chat.tasks.Task;
 
 /**
  * Contains the operations used for storing and loading data.
@@ -52,7 +51,7 @@ public class Storage {
                 tasks.addTask(task, false);
             }
             return tasks;
-        } catch (FileNotFoundException | IndexOutOfBoundsException e ) {
+        } catch (FileNotFoundException | IndexOutOfBoundsException e) {
             throw new ChatFileException("ChatFileException: File format error!");
         }
     }

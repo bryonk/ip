@@ -9,11 +9,22 @@ public class Job {
     private final Function function;
     private final String description;
 
+    /**
+     * Constructor for Job using Function.
+     *
+     * @param function Function type parsed.
+     */
     public Job(Function function) {
         this.function = function;
         this.description = "";
     }
 
+    /**
+     * Constructor for Job using Function and Description.
+     *
+     * @param function Function type parsed.
+     * @param description Description following Function type.
+     */
     public Job(Function function, String description) {
         this.function = function;
         this.description = description;

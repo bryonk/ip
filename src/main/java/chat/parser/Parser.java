@@ -41,7 +41,7 @@ public class Parser {
     public static Task parseFileInput(String[] input) {
         Task task = switch (input[0].trim()) {
             case "T" -> new Todo(input[2].trim());
-            case "D" ->  new Deadline(input[2].trim(), input[3].trim());
+            case "D" -> new Deadline(input[2].trim(), input[3].trim());
             case "E" -> new Event(input[2].trim(), input[3].trim(), input[4].trim());
             default -> new Task("");
         };
@@ -51,6 +51,13 @@ public class Parser {
         return task;
     }
 
+    /**
+     * Converts the input into Integer.
+     *
+     * @param input String input.
+     * @return Integer parsed from input.
+     * @throws ChatParseException If the input is not a number.
+     */
     public static Integer convertToInt(String input) throws ChatParseException {
         try {
             return Integer.parseInt(input);

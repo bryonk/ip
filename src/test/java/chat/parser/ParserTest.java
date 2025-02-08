@@ -1,8 +1,8 @@
 package chat.parser;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 public class ParserTest {
     @Test
@@ -24,8 +24,8 @@ public class ParserTest {
     @Test
     public void parseFileInput_eventTest() {
         assertEquals("[E][X] test 3 (from: Jan 31 2025, 1436 to: Jan 31 2025, 1536)",
-                Parser.parseFileInput(new String[]{"E", "1", "test 3",
-                        "31/01/2025 1436", "31/01/2025 1536"}).toString());
+                Parser.parseFileInput(new String[]{"E", "1", "test 3", "31/01/2025 1436", "31/01/2025 1536"})
+                        .toString());
     }
 
     @Test

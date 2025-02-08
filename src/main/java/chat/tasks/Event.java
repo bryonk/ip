@@ -1,10 +1,10 @@
 package chat.tasks;
 
-import chat.exceptions.ChatAddException;
-
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import chat.exceptions.ChatAddException;
 
 /**
  * Event task that stores description and dates from and to the event occurs.

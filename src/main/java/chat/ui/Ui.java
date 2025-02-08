@@ -1,9 +1,9 @@
 package chat.ui;
 
+import java.util.Scanner;
+
 import chat.exceptions.ChatException;
 import chat.tasklist.TaskList;
-
-import java.util.Scanner;
 
 /**
  * Contains the interactions with the user.
@@ -25,6 +25,9 @@ public class Ui {
         return this.scanner.nextLine();
     }
 
+    /**
+     * Prints the welcome text.
+     */
     public void printWelcome() {
         System.out.println(LINE_SEPARATOR);
         System.out.println("Hello! I'm Chat");

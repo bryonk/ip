@@ -1,9 +1,9 @@
 package chat.tasklist;
 
+import java.util.ArrayList;
+
 import chat.exceptions.ChatEditException;
 import chat.tasks.Task;
-
-import java.util.ArrayList;
 
 /**
  * Stores a list of Task objects and operates on it.
@@ -108,6 +108,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Converts the TaskList into a printable format.
+     *
+     * @return Printable format of the TaskList.
+     */
     public String toString() {
         if (tasks.isEmpty()) {
             return "There are no Tasks.";
