@@ -93,6 +93,11 @@ public class TaskList {
         return this.tasks.get(index - 1);
     }
 
+    /**
+     * Finds Tasks that contain the input string.
+     *
+     * @param input String to match with each Task.
+     */
     public void findTask(String input) {
         System.out.println("Here are the matching tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
