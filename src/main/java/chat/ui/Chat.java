@@ -2,15 +2,15 @@ package chat.ui;
 
 import chat.exceptions.ChatException;
 import chat.exceptions.ChatInvalidException;
-import chat.parser.Parser;
 import chat.parser.Function;
 import chat.parser.Job;
+import chat.parser.Parser;
 import chat.storage.Storage;
 import chat.tasklist.TaskList;
-import chat.tasks.Task;
-import chat.tasks.Event;
-import chat.tasks.Todo;
 import chat.tasks.Deadline;
+import chat.tasks.Event;
+import chat.tasks.Task;
+import chat.tasks.Todo;
 
 /**
  * Base object containing the main function.
@@ -36,6 +36,9 @@ public class Chat {
         }
     }
 
+    /**
+     * Executes the main section of the code.
+     */
     public void run() {
         ui.printWelcome();
         boolean isExit = false;
@@ -82,8 +85,8 @@ public class Chat {
         } else if (job.getFunction() == Function.todo) {
             Task task = new Todo(job.getDescription());
             tasks.addTask(task, true);
-        } else if (job.getFunction() == Function.deadline &&
-                job.getDescription().contains("/by")) {
+        } else if (job.getFunction() == Function.deadline
+                && job.getDescription().contains("/by")) {
             String[] toSplit = job.getDescription().split("/by");
             try {
                 String taskName = toSplit[0].trim();
@@ -97,9 +100,9 @@ public class Chat {
                 throw new ChatInvalidException("ChatInvalidException: Function deadline has bad arguments!");
             }
 
-        } else if (job.getFunction() == Function.event &&
-                job.getDescription().contains("/from") &&
-                job.getDescription().contains("/to")) {
+        } else if (job.getFunction() == Function.event
+                && job.getDescription().contains("/from")
+                && job.getDescription().contains("/to")) {
             String[] toSplit = job.getDescription().split("/from");
             try {
                 String taskName = toSplit[0].trim();
