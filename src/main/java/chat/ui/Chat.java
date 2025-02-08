@@ -1,9 +1,6 @@
 package chat.ui;
 
 import chat.exceptions.ChatException;
-import chat.exceptions.ChatInvalidException;
-import chat.parser.Parser;
-import chat.parser.Function;
 import chat.parser.Job;
 import chat.storage.Storage;
 import chat.tasklist.TaskList;
@@ -12,113 +9,131 @@ import chat.tasks.Event;
 import chat.tasks.Todo;
 import chat.tasks.Deadline;
 
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Base object containing the main function.
  */
 public class Chat {
     private final Storage storage;
     private TaskList tasks;
-    private final Ui ui;
 
     /**
      * Constructs a Chat object containing Ui, Storage and TaskList.
-     *
-     * @param filePath File path containing storage data.
      */
-    public Chat(String filePath) {
-        this.ui = new Ui();
-        this.storage = new Storage(filePath);
+    public Chat() {
+        this.storage = new Storage("data/chat.txt");
         try {
             this.tasks = storage.loadTasks();
         } catch (ChatException e) {
-            ui.printError(e);
             this.tasks = new TaskList();
         }
-    }
-
-    public void run() {
-        ui.printWelcome();
-        boolean isExit = false;
-        while (!isExit) {
-            try {
-                Job job = Parser.parseInput(ui.readCommand());
-                ui.printLine();
-                isExit = runCommand(job);
-                storage.saveData(tasks);
-            } catch (ChatException e) {
-                ui.printError(e);
-            } finally {
-                ui.printLine();
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-        new Chat("data/chat.txt").run();
     }
 
     /**
      * Determine and execute command to run.
      *
      * @param job Job object containing Function and description.
-     * @return Boolean isExit to exit program.
+     * @return String response for MainWindow.
      */
-    public boolean runCommand(Job job) {
-        boolean isExit = false;
-        if (job.getFunction() == Function.bye) {
-            ui.printExit();
-            isExit = true;
-        } else if (job.getFunction() == Function.list) {
-            ui.printTasks(tasks);
-        } else if (job.getFunction() == Function.mark) {
-            Integer index = Parser.convertToInt(job.getDescription());
-            tasks.markTask(index);
-        } else if (job.getFunction() == Function.unmark) {
-            Integer index = Parser.convertToInt(job.getDescription());
-            tasks.unmarkTask(index);
-        } else if (job.getFunction() == Function.delete) {
-            Integer index = Parser.convertToInt(job.getDescription());
-            tasks.deleteTask(index, true);
-        } else if (job.getFunction() == Function.todo) {
-            Task task = new Todo(job.getDescription());
-            tasks.addTask(task, true);
-        } else if (job.getFunction() == Function.deadline &&
-                job.getDescription().contains("/by")) {
-            String[] toSplit = job.getDescription().split("/by");
-            try {
-                String taskName = toSplit[0].trim();
-                String deadlineBy = toSplit[1].trim();
-                if (taskName.isEmpty() || deadlineBy.isEmpty()) {
-                    throw new ChatInvalidException("ChatInvalidException: Function deadline is missing arguments!");
+    public String getResponse(Job job) {
+        String response = "";
+        Task task;
+        boolean hasError = false;
+        DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
+        try {
+            switch (job.getFunction()) {
+            case bye:
+                response = "Bye. Hope to see you again soon!";
+                break;
+            case list:
+                response = tasks.toString();
+                break;
+            case mark:
+                if (job.hasIndex()) {
+                    response = tasks.markTask(job.getIndex());
+                } else {
+                    response = "Error: mark function out of bounds!";
                 }
-                Task task = new Deadline(taskName, deadlineBy);
-                tasks.addTask(task, true);
-            } catch (IndexOutOfBoundsException e) {
-                throw new ChatInvalidException("ChatInvalidException: Function deadline has bad arguments!");
-            }
+                break;
+            case unmark:
+                if (job.hasIndex()) {
+                    response = tasks.unmarkTask(job.getIndex());
+                } else {
+                    response = "Error: unmark function out of bounds!";
+                }
+                break;
+            case delete:
+                if (job.hasIndex()) {
+                    response = tasks.deleteTask(job.getIndex(), true);
+                } else {
+                    response = "Error: delete function out of bounds!";
+                }
+                break;
+            case todo:
+                task = new Todo(job.getDescription());
+                response = tasks.addTask(task, true);
+                break;
+            case deadline:
+                if (job.getDescription().contains("/by")) {
+                    String[] toSplit = job.getDescription().split("/by");
+                    String taskName = toSplit[0].trim();
+                    String deadlineBy = toSplit[1].trim();
+                    if (taskName.isEmpty() || deadlineBy.isEmpty()) {
+                        hasError = true;
+                    }
+                    try {
+                        task = new Deadline(taskName, LocalDateTime.from(dateTime.parse(deadlineBy.trim())));
+                        response = tasks.addTask(task, true);
+                    } catch (DateTimeException e) {
+                        response = "Error: bad date format (dd/MM/yyyy HHmm)";
+                    }
 
-        } else if (job.getFunction() == Function.event &&
-                job.getDescription().contains("/from") &&
-                job.getDescription().contains("/to")) {
-            String[] toSplit = job.getDescription().split("/from");
-            try {
-                String taskName = toSplit[0].trim();
-                String[] nextSplit = toSplit[1].split("/to");
-                String eventFrom = nextSplit[0].trim();
-                String eventTo = nextSplit[1].trim();
-                if (taskName.isEmpty() || eventFrom.isEmpty() || eventTo.isEmpty()) {
-                    throw new ChatInvalidException("ChatInvalidException: Function event is missing arguments!");
+                } else {
+                    hasError = true;
                 }
-                Task task = new Event(taskName, eventFrom, eventTo);
-                tasks.addTask(task, true);
-            } catch (IndexOutOfBoundsException e) {
-                throw new ChatInvalidException("ChatInvalidException: Function event has bad arguments!");
-            }
-        } else if (job.getFunction() == Function.find) {
-            tasks.findTask(job.getDescription());
-        } else {
-            throw new ChatInvalidException("ChatInvalidException: Invalid Function!");
+                if (hasError) {
+                    response = "Error: deadline function has bad arguments!";
+                }
+                break;
+                case event:
+                    if (job.getDescription().contains("/from") &&  job.getDescription().contains("/to")) {
+                        String[] toSplit = job.getDescription().split("/from");
+                        String taskName = toSplit[0].trim();
+                        String[] nextSplit = toSplit[1].split("/to");
+                        String eventFrom = nextSplit[0].trim();
+                        String eventTo = nextSplit[1].trim();
+                        if (taskName.isEmpty() || eventFrom.isEmpty() || eventTo.isEmpty()) {
+                            hasError = true;
+                        }
+                        try {
+                            task = new Event(taskName,
+                                    LocalDateTime.from(dateTime.parse(eventFrom.trim())),
+                                    LocalDateTime.from(dateTime.parse(eventTo.trim())));
+                            response = tasks.addTask(task, true);
+                        } catch (DateTimeException e) {
+                            response = "Error: bad date format (dd/MM/yyyy HHmm)";
+                        }
+                    } else {
+                        hasError = true;
+                    }
+                    if (hasError) {
+                        response = "Error: event function has bad arguments!";
+                    }
+                    break;
+                case find:
+                    response = tasks.findTask(job.getDescription());
+                    break;
+                default:
+                    response = "Unknown command";
+                    break;
+            };
+        } catch (ChatException e) {
+            response = e.getMessage();
         }
-        return isExit;
+        storage.saveData(tasks);
+        return response;
     }
 }

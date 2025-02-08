@@ -28,9 +28,4 @@ public class ParserTest {
                         "31/01/2025 1436", "31/01/2025 1536"}).toString());
     }
 
-    @Test
-    public void convertToIntTest() {
-        assertEquals(1, Parser.convertToInt("1"));
-    }
-
 }

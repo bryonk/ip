@@ -1,10 +1,12 @@
 package chat.parser;
 
-import chat.exceptions.ChatParseException;
 import chat.tasks.Deadline;
 import chat.tasks.Event;
 import chat.tasks.Task;
 import chat.tasks.Todo;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 /**
@@ -17,9 +19,8 @@ public class Parser {
      *
      * @param input User input.
      * @return Job object containing the function and description if present.
-     * @throws ChatParseException If the function is not recognised.
      */
-    public static Job parseInput(String input) throws ChatParseException {
+    public static Job parseInput(String input) {
         try {
             String[] inputArr = input.split(" ", 2);
             if (inputArr.length == 1) {
@@ -28,7 +29,7 @@ public class Parser {
                 return new Job(Function.valueOf(inputArr[0]), inputArr[1]);
             }
         } catch (IllegalArgumentException e) {
-            throw new ChatParseException("ChatParseException: Function not recognised");
+            return new Job(Function.error, "Error: Function not recognised");
         }
     }
 
@@ -39,23 +40,19 @@ public class Parser {
      * @return Task object
      */
     public static Task parseFileInput(String[] input) {
+        DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
         Task task = switch (input[0].trim()) {
             case "T" -> new Todo(input[2].trim());
-            case "D" ->  new Deadline(input[2].trim(), input[3].trim());
-            case "E" -> new Event(input[2].trim(), input[3].trim(), input[4].trim());
+            case "D" ->  new Deadline(input[2].trim(),
+                    LocalDateTime.from(dateTime.parse(input[3].trim())));
+            case "E" -> new Event(input[2].trim(),
+                    LocalDateTime.from(dateTime.parse(input[3].trim())),
+                    LocalDateTime.from(dateTime.parse(input[4].trim())));
             default -> new Task("");
         };
         if (input[1].trim().equals("1")) {
             task.markAsDone();
         }
         return task;
-    }
-
-    public static Integer convertToInt(String input) throws ChatParseException {
-        try {
-            return Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            throw new ChatParseException("ChatParseException: Not a number!");
-        }
     }
 }
