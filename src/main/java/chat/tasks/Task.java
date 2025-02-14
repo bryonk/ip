@@ -38,15 +38,38 @@ public class Task {
         return (isDone ? "X" : " "); // mark done task with X
     }
 
+    /**
+     * Marks a task as done.
+     */
     public void markAsDone() {
         this.isDone = true;
     }
 
+    /**
+     * Marks a task as not done.
+     */
     public void markAsUndone() {
         this.isDone = false;
     }
 
     public boolean contains(String input) {
         return this.description.toLowerCase().contains(input.toLowerCase());
+    }
+
+    /**
+     * Compares if a Task has the same output string.
+     *
+     * @param task Task to compare with.
+     * @return if the two Tasks are the same.
+     */
+    public boolean compareWith(Task task) {
+        if (this.isDone) {
+            task.markAsDone();
+        }
+        boolean isEquals = this.toString().equalsIgnoreCase(task.toString());
+        if (this.isDone) {
+            task.markAsUndone();
+        }
+        return isEquals;
     }
 }

@@ -32,7 +32,7 @@ public class Event extends Task {
 
     @Override
     public String toDataString() {
-        return "D" + super.toDataString()
+        return "E" + super.toDataString()
                 + "/-/" + this.from.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm"))
                 + "/-/" + this.to.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm"));
     }
