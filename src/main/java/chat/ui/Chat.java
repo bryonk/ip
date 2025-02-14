@@ -17,13 +17,13 @@ import chat.tasks.Todo;
  * Base object containing the main function.
  */
 public class Chat {
-    private final Storage storage;
-    private TaskList tasks;
-
     private static final String DATE_FORMAT = "dd/MM/yyyy HHmm";
     private static final String REGEX_BY = "/by";
     private static final String REGEX_FROM = "/from";
     private static final String REGEX_TO = "/to";
+
+    private final Storage storage;
+    private TaskList tasks;
 
     /**
      * Constructs a Chat object containing Ui, Storage and TaskList.
@@ -125,6 +125,9 @@ public class Chat {
 
     private String addTodo(Job job) {
         Task task = new Todo(job.getDescription());
+        if (tasks.checkDuplicate(task)) {
+            return "Error: Task has already been added.";
+        }
         return tasks.addTask(task, true);
     }
 
@@ -144,6 +147,9 @@ public class Chat {
         }
         try {
             Task task = new Deadline(taskName, LocalDateTime.from(d.parse(deadlineBy)));
+            if (tasks.checkDuplicate(task)) {
+                return "Error: Task has already been added.";
+            }
             return tasks.addTask(task, true);
         } catch (DateTimeException e) {
             return "Error: bad date format (" + DATE_FORMAT + ")";
@@ -174,6 +180,9 @@ public class Chat {
             Task task = new Event(taskName,
                     LocalDateTime.from(d.parse(eventFrom)),
                     LocalDateTime.from(d.parse(eventTo)));
+            if (tasks.checkDuplicate(task)) {
+                return "Error: Task has already been added.";
+            }
             return tasks.addTask(task, true);
         } catch (DateTimeException e) {
             return "Error: bad date format (" + DATE_FORMAT + ")";

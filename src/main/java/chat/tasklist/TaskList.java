@@ -142,4 +142,13 @@ public class TaskList {
         return strings;
     }
 
+    public boolean checkDuplicate(Task t) {
+        for (Task task : tasks) {
+            if (task.compareWith(t)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
