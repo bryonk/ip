@@ -33,7 +33,6 @@ public class DialogBox extends HBox {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         dialog.setText(text);
         displayPicture.setImage(img);
     }
@@ -48,10 +47,24 @@ public class DialogBox extends HBox {
         setAlignment(Pos.TOP_LEFT);
     }
 
+    /**
+     * Returns a DialogBox with the user's input.
+     *
+     * @param text String input from the user.
+     * @param img Image file for the DialogBox.
+     * @return DialogBox containing the user input and image.
+     */
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
 
+    /**
+     * Returns a DialogBox with Chat's response.
+     *
+     * @param text String response from Chat.
+     * @param img Image file for the DialogBox.
+     * @return DialogBox containing the response and image.
+     */
     public static DialogBox getChatDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();

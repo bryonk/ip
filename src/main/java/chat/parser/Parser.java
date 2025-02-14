@@ -41,13 +41,13 @@ public class Parser {
     public static Task parseFileInput(String[] input) {
         DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
         Task task = switch (input[0].trim()) {
-            case "T" -> new Todo(input[2].trim());
-            case "D" -> new Deadline(input[2].trim(),
-                    LocalDateTime.from(dateTime.parse(input[3].trim())));
-            case "E" -> new Event(input[2].trim(),
-                    LocalDateTime.from(dateTime.parse(input[3].trim())),
-                    LocalDateTime.from(dateTime.parse(input[4].trim())));
-            default -> new Task("");
+        case "T" -> new Todo(input[2].trim());
+        case "D" -> new Deadline(input[2].trim(),
+                LocalDateTime.from(dateTime.parse(input[3].trim())));
+        case "E" -> new Event(input[2].trim(),
+                LocalDateTime.from(dateTime.parse(input[3].trim())),
+                LocalDateTime.from(dateTime.parse(input[4].trim())));
+        default -> new Task("");
         };
         if (input[1].trim().equals("1")) {
             task.markAsDone();
