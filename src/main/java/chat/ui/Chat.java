@@ -39,6 +39,7 @@ public class Chat {
      * @return String response for MainWindow.
      */
     public String getResponse(Job job) {
+        assert job != null;
         String response = "";
         Task task;
         boolean hasError = false;
