@@ -44,6 +44,7 @@ public class Chat {
      * @return String response for MainWindow.
      */
     public String getResponse(Job job) {
+        assert job != null;
         String response = processJob(job);
         storage.saveData(tasks);
         return response;

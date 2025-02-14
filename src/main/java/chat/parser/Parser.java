@@ -39,6 +39,7 @@ public class Parser {
      * @return Task object
      */
     public static Task parseFileInput(String[] input) {
+        assert input != null;
         DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
         Task task = switch (input[0].trim()) {
         case "T" -> new Todo(input[2].trim());
