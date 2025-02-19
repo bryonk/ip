@@ -25,8 +25,8 @@ public class MainWindow extends AnchorPane {
 
     private Chat chat;
 
-    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private final Image chatImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
+    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/cat.png"));
+    private final Image chatImage = new Image(this.getClass().getResourceAsStream("/images/dog.png"));
 
     @FXML
     public void initialize() {

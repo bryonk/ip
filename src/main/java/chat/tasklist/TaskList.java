@@ -116,17 +116,16 @@ public class TaskList {
     public String toString() {
         if (tasks.isEmpty()) {
             return "There are no Tasks.";
-        } else {
-            StringBuilder output = new StringBuilder();
-            output.append("Here are the tasks in your list:\n");
-            for (int i = 1; i < this.getSize() + 1; i++) {
-                output.append(i).append(".").append(this.getTask(i));
-                if (i != this.getSize()) {
-                    output.append("\n");
-                }
-            }
-            return output.toString();
         }
+        StringBuilder output = new StringBuilder();
+        output.append("Here are the tasks in your list:\n");
+        for (int i = 1; i < this.getSize() + 1; i++) {
+            output.append(i).append(".").append(this.getTask(i));
+            if (i != this.getSize()) {
+                output.append("\n");
+            }
+        }
+        return output.toString();
     }
 
     /**
@@ -142,6 +141,12 @@ public class TaskList {
         return strings;
     }
 
+    /**
+     * Checks for duplicate Tasks in TaskList.
+     *
+     * @param t Task to check with.
+     * @return if the Task is a duplicate.
+     */
     public boolean checkDuplicate(Task t) {
         for (Task task : tasks) {
             if (task.compareWith(t)) {

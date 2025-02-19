@@ -38,7 +38,7 @@ public class Chat {
     }
 
     /**
-     * Determine and execute command to run.
+     * Processes the given Job and returns a response.
      *
      * @param job Job object containing Function and description.
      * @return String response for MainWindow.

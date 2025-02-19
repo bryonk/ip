@@ -53,7 +53,7 @@ public class Job {
     }
 
     /**
-     * Check if the description contains an integer.
+     * Checks whether the Job description contains an integer.
      *
      * @return If the Job contains an index in the description.
      */
